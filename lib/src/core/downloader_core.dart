@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flowder/src/flowder.dart';
-import 'package:flowder/src/utils/constants.dart';
-import 'package:flowder/src/utils/downloader_utils.dart';
+import '../flowder.dart';
 
 /// Class used to set/get any component from [DownloaderUtils]
 /// also required to actually `start`,`stop`,`pause`,`cancel` a download.
@@ -16,10 +14,14 @@ class DownloaderCore {
   /// Inner url
   late final String _url;
 
+  ///Full path
+  late final String fullPath;
+
   /// Check if the download was cancelled.
   bool isCancelled = false;
 
-  DownloaderCore(StreamSubscription inner, DownloaderUtils options, String url)
+  DownloaderCore(StreamSubscription inner, DownloaderUtils options, String url,
+      this.fullPath)
       : _inner = inner,
         _options = options,
         _url = url;
@@ -35,7 +37,8 @@ class DownloaderCore {
   Future<void> resume() async {
     _isActive();
     if (isDownloading) return;
-    _inner = await Flowder.initDownload(_url, _options);
+    var initData = await Flowder.initDownload(_url, _options);
+    _inner = initData.streamSubscription;
   }
 
   /// Cancel any current download, even if the download is [pause]
@@ -60,8 +63,9 @@ class DownloaderCore {
   Future<DownloaderCore> download(String url, DownloaderUtils options) async {
     try {
       // ignore: cancel_subscriptions
-      final subscription = await Flowder.initDownload(url, options);
-      return DownloaderCore(subscription, options, url);
+      final initData = await Flowder.initDownload(url, options);
+      return DownloaderCore(
+          initData.streamSubscription, options, url, initData.fullPath);
     } catch (e) {
       rethrow;
     }

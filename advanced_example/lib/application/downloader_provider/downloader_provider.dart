@@ -37,7 +37,7 @@ class DownloaderNotifier extends StateNotifier<DownloaderState> {
       String fileName, String extension, String url) async {
     options = DownloaderUtils(
       progress: ProgressImplementation(),
-      file: File('$path/$fileName.$extension'),
+      //file: File('$path/$fileName.$extension'),
       onDone: () {
         CustomToast.show(
             title: S.of(context).downloaderTitle,
@@ -51,6 +51,7 @@ class DownloaderNotifier extends StateNotifier<DownloaderState> {
         print('Downloading: $progress');
         state = DownloaderState.loading();
       },
+      path: path,
     );
     downloaderCore ??= await Flowder.download(url, options!);
     CustomToast.show(

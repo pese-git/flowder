@@ -54,10 +54,11 @@ class _MyAppState extends State<MyApp> {
                     final progress = (current / total) * 100;
                     print('Downloading: $progress');
                   },
-                  file: File('$path/200MB.zip'),
+                  //file: File('$path/200MB.zip'),
                   progress: ProgressImplementation(),
                   onDone: () => print('COMPLETE'),
                   deleteOnCancel: true,
+                  path: path,
                 );
                 core = await Flowder.download(
                     'http://ipv4.download.thinkbroadband.com/200MB.zip',

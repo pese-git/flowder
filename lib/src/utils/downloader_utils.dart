@@ -1,8 +1,6 @@
-import 'dart:io';
+import 'package:dio/dio.dart';
 
-import 'package:dio/dio.dart' hide ProgressCallback;
-import 'package:flowder/src/flowder.dart';
-import 'package:flowder/src/progress/interfaces/progress_interface.dart';
+import '../flowder.dart';
 
 /// Required for the initialization of [Flowder]
 class DownloaderUtils {
@@ -13,25 +11,28 @@ class DownloaderUtils {
   /// Dio Client for HTTP Request
   Dio? client;
 
-  /// Setup a location to store the downloaded file
-  File file;
+  // /// Setup a location to store the downloaded file
+  // File file;
+
+  /// Path to file without file name
+  String path;
 
   /// should delete when cancel?
   bool deleteOnCancel;
 
   /// Function to be called when the download has finished.
-  final VoidCallback onDone;
+  final Function onDone;
 
   /// Function with the current values of the download
   /// ```dart
   /// Function(int bytes, int total) => print('current byte: $bytes and total of bytes: $total');
   /// ```
-  final ProgressCallback progressCallback;
+  final FlowderProgressCallback progressCallback;
 
   DownloaderUtils({
     required this.progress,
     this.client,
-    required this.file,
+    required this.path,
     this.deleteOnCancel = false,
     required this.onDone,
     required this.progressCallback,
