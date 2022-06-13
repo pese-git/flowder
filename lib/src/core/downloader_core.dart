@@ -46,9 +46,9 @@ class DownloaderCore {
     _isActive();
     await _inner.cancel();
     await _options.progress.resetProgress(_url);
-    if (_options.deleteOnCancel) {
-      await _options.file.delete();
-    }
+    //if (_options.deleteOnCancel) {
+    //   await _options.file.delete();
+    //}
     isCancelled = true;
     isDownloading = false;
   }
